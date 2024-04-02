@@ -33,15 +33,15 @@
             <code class="language-cpp">
 #pragma once
 /*
-    * @file: Event.h
-    * @author: Sakura Shih (sakura.shih@digipen.edu)
-    * @date: 9/8/2023
-    *
-    * @brief: The Framework for every other event in the system. Every other event must include this file to work.
-    *		   All other Publisher and Subscriber classes must inherit from this file's classes in order to work properly.
-    *
-    * � 2023 DigiPen (USA) Corporation
-    */
+* @file: Event.h
+* @author: Sakura Shih (sakura.shih@digipen.edu)
+* @date: 9/8/2023
+*
+* @brief: The Framework for every other event in the system. Every other event must include this file to work.
+*		  All other Publisher and Subscriber classes must inherit from this file's classes in order to work properly.
+*
+* � 2023 DigiPen (USA) Corporation
+*/
 
 #include <vector>
 
@@ -57,7 +57,7 @@ class Subscriber
     using SubscriberFunction = void(Derived::*)(message...);
 
 
-        //private variable to hold each individual subscriber's function that occurs upon notification
+//private variable to hold each individual subscriber's function that occurs upon notification
 private: SubscriberFunction onNotify;
 
 
@@ -98,12 +98,12 @@ public: static void Publish(message... messages)
         std::invoke(Subscriber->onNotify, derivedSubscriber, messages...);
     }
 }
-        //Subscribe adds a subscriber to the list
+//Subscribe adds a subscriber to the list
 private: static void subscribe(SubscriberTemplate* current)
 {
     subscriberList.push_back(current);
 }
-        //unsubscribe removes it from the list
+//unsubscribe removes it from the list
 private: static void unsubscribe(SubscriberTemplate* current)
 {
     //Unsubscribe this specific subscriber.
@@ -111,7 +111,7 @@ private: static void unsubscribe(SubscriberTemplate* current)
         std::remove(subscriberList.begin(), subscriberList.end(), current),
         subscriberList.end());
 }
-        //Subscriber is a friend class so that any system can use the Publisher functions.
+//Subscriber is a friend class so that any system can use the Publisher functions.
 friend class SubscriberTemplate;
 
 };
