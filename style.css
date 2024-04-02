@@ -81,3 +81,26 @@ section h2 {
 footer p {
     font-size: 1.2em;
 }
+
+/* Example styles for code blocks */
+pre {
+    padding: 1em;
+    overflow: auto;
+}
+
+/* Style for code blocks */
+pre code {
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    display: block;
+    white-space: pre-wrap;
+}
+
+/* Style for specific language */
+.language-cpp {
+    color: #d14;
+}

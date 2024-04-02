@@ -27,7 +27,97 @@
             </nav>
         </div>
     </header>
+    <div class="container">
+        <h2>Publisher-Subscriber Code for HexenHold</h2>
+        <pre>
+            <code class="language-cpp">
+#pragma once
+/*
+    * @file: Event.h
+    * @author: Sakura Shih (sakura.shih@digipen.edu)
+    * @date: 9/8/2023
+    *
+    * @brief: The Framework for every other event in the system. Every other event must include this file to work.
+    *		   All other Publisher and Subscriber classes must inherit from this file's classes in order to work properly.
+    *
+    * � 2023 DigiPen (USA) Corporation
+    */
 
+#include <vector>
+
+template <typename Derived, typename... message> class Publisher;
+template <typename Derived, typename... message> class Subscriber;
+
+
+//Variadic argument for the Subscriber so they can receive multiple 
+template <typename Derived, typename... message>
+class Subscriber
+{
+    using PublisherTemplate = Publisher<Derived, message...>;
+    using SubscriberFunction = void(Derived::*)(message...);
+
+
+        //private variable to hold each individual subscriber's function that occurs upon notification
+private: SubscriberFunction onNotify;
+
+
+friend class PublisherTemplate;
+
+//Both of these are protected because we want the Subscribers to only be created and destroyed from derived subclasses.
+//Let's pass the function pointer of whatever derived class we want in as a parameter of the constructor
+protected: Subscriber(SubscriberFunction function)
+    : onNotify(function)
+{
+    PublisherTemplate::subscribe(this);
+}
+
+protected: ~Subscriber()
+{
+    PublisherTemplate::unsubscribe(this);
+}
+
+
+};
+
+
+template <typename Derived, typename... message> 
+class Publisher
+{
+    using SubscriberTemplate = Subscriber<Derived, message...>;
+    
+
+//A private vector that works as the subscriberList
+private: static inline std::vector<SubscriberTemplate*> subscriberList = {};
+
+//protected so only subclasses on the subscriber list can call it. Don't want anything to just be able to call it.
+public: static void Publish(message... messages)
+{
+    for (auto* Subscriber : subscriberList)
+    {
+        Derived* derivedSubscriber = static_cast<Derived*>(Subscriber);
+        std::invoke(Subscriber->onNotify, derivedSubscriber, messages...);
+    }
+}
+        //Subscribe adds a subscriber to the list
+private: static void subscribe(SubscriberTemplate* current)
+{
+    subscriberList.push_back(current);
+}
+        //unsubscribe removes it from the list
+private: static void unsubscribe(SubscriberTemplate* current)
+{
+    //Unsubscribe this specific subscriber.
+    subscriberList.erase(
+        std::remove(subscriberList.begin(), subscriberList.end(), current),
+        subscriberList.end());
+}
+        //Subscriber is a friend class so that any system can use the Publisher functions.
+friend class SubscriberTemplate;
+
+};
+            </code>
+        </pre>
+    </div>
     
     <div class="container">
         <h2>Targeting Code for HexenHold</h2>
@@ -86,8 +176,11 @@ int PhysicsSystem::GetNearestEntity(const int& entity, const std::string& tag, b
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 
     <!-- Initialize Prism.js -->
+    <!-- Initialize Prism.js -->
     <script>
-        Prism.highlightAll();
-    </script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Prism.highlightAll();
+        });
+</script>
 </body>
 </html>
