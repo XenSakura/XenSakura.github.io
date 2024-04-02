@@ -27,47 +27,24 @@
     <!-- Your blog content goes here -->
     <section id="HexenHold">
         <div class="container">
-            <h2>HexenHold</h2>
+            <h2>HexenHold (August 2023 - Present)</h2>
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/2gA4EkgiFLQ" frameborder="0" allowfullscreen></iframe>
             </div>
             <p>
-                On this project, I was the Systems and Tools Programmer. I was the one who implemented a large part of the Entity Component System Framework. On top of that, I implemented a basic UI editor, implemented a lot of the targeting code using raycast algorithms, and optimized the game's physics and collision code to greatly speed up performance (1 fps -> consistently 200 on benchmark machines). On this project, I learned skills related to Data-Oriented Design in programming, and learned a lot about the structure of game engines. I also learned how to implement large chunks of gameplay code, and designing flexible toolsets for designers.
+                For this Project, I was the Co-Producer and the Engine Programmer. This team composed of 4 other programmers and 3 designers. In this project, we ran into several challenges while designing the engine architecture that tested my abilities as a programmer, and as a leader. In the initial prototyping phase, the designers envisioned a tower defense platformer game with hundreds of entities on screen. I recognized that the traditional game engine component based architecture was not sufficient to provide the performance we would need to handle the management of hundreds of entities simultaneously, so I envisioned the creation of a Data-Oriented Design Entity Component System game engine. The reasoning behind my decision in this scenario was because ECS provided major cache coherency performance improvements. This allowed us to provide flexibility to designers to add whatever quantities of entities they wanted into the game. An additional reasoning for choosing this engine architecture was the desire to challenge ourselves to familiarize ourselves with other types of engine architecture, and to challenge ourselves.  However, this led to pushback from other programmers within the team, as many programmers were unconfident about their ability to switch to a new type of engine architecture. To reassure the programmers on the team, I developed a templatized Publisher-Subscriber system that handled communications between systems within the game engine, and developed large chunks of the early engine architecture. This convinced many of the programmers on the team in my vision, and we proceeded down the ECS route for our game engine architecture. <br>
+                Another additional challenge we struggled with was production deadlines. Near the second milestone of the project, I was struggling to finish a centralized Entity Management System for the team. I had overengineered my solution, and was attempting to implement an Archetypes-style ECS like Unity's, but, at the time, I didn't have the necessary knowledge regarding data structures and templates to properly implement such a system effectively. I exercised flexibility and adaptability, and transitioned towards having each system handle their own components independently. <br>
+                For the second half of the project, my role transitioned more towards generalist programmer, as I transitioned towards working on tools for designers, code refactoring and documentation, graphics programming and optimizations. During the second half of the project, I spent the first milestone working towards refactoring large chunks of how our engine handled scene and entity management. Our scenes were effectively vectors that stored integer ids that represented each individual entity, which, when used to index into the component vectors, would return the corresponding entity's component. I refactored the scene system to handle entity creation within a dedicated entity factory, and instead of having the entity factory directly access the Scene's entities vector directly, I had the entity factories return the int that represented the entity that was created. Additionally, I refactored the scene system to handle multi-scene loading, which allowed designers to create UI elements on a completely separate scene layer that could be overlaid directly on top of the main scene. This greatly improved the UI pipeline for designers, and simplified the process of designing UI elements for the game. I also tried to further streamline this process by developing a rudimentary UI editor utilizing ImGUI. This prototype was eventually scrapped, due to scope complexity problems. Such an editor required direct rendering feedback for designers to be able to see where they were placing UI elements, and our rendering framework was not flexible enough to allow the placing of temporary elements. Additionally, previously our JSON Serialization procedures had always created new archetype files when needed, but we had never had to deal with the case of having to compare and save additional changes to a JSON file, which complicated the development process. Another significant factor leading to the death of the UI editor was that our UI elements within code were not inherited from a singular UI element class, but rather all completely separate elements with completely different naming schemes. The final nail in the coffin was when iteration on the UI Editor slowed to a halt, taking three weeks to finish. At this point, the team universally decided to cut the UI editor and instead of programmers directly work with designers to implement UI elements. <br>
+                Following the UI editor, my role became focused specifically on optimization and performance issues. Using Visual Studio's profiling tools, I identified problems with how our game engine handled collisions, physics, debug rendering, and with our graphics system. The raycast algorithm I had developed previously was a significant contributor to performance problems, so I implemented a fix that would skip the raycasting algorithm if the current entity's type was not an entity that the current raycast needed to check against. I further sped up the raycasting algorithm by checking the square distance between the current entity. If the entity wasn't in a radius that was less than our sniper turret's range sqaured, it would skip the check. These optimizations proved to be a significant performance increase for the engine. Outside of physics and collisions, I further refactored how we handled debugging rendering within the engine. Previously, we stored the tags associated with relevant entities within a vector, and would search through the entire vector to find the relevant entity's tags. Through my refactoring, I switched out the container to a Binary Search Tree to significantly boost the performance of the tag system. <br>
+                Over the duration of summer 2024, I have been presently workin on refactoring the OpenGL graphics framework to handle 2D lighting for better UX design. After talking to designers, we decided that turrets should emanate a light cone that reflected their current actual range. This would help players with understanding the range of each of the turrets and provide atmosphere and aesthetic to the game. I was assigned to be the primary graphics programmer in charge of this UX feature, and it is still currently being implemented.
             </p>
         </div>
     </section>
     <section id="Artefacter">
         <div class="container">
-            <h2>Artefacter</h2>
+            <h2>Artefacter (October 2023 - January 2024) </h2>
             <p>
-                On this project, I was the engine architect. I implemented core parts of the component based engine architecture. I also implemented Physics, Particle Effects, Deserialization, and a rudimentary Behavior system.
-            </p>
-        </div>
-    </section>
-
-    <section id="The Rolling Dead">
-        <div class="container">
-            <h2>The Rolling Dead</h2>
-            <p>
-                My second DigiPen project, for this project I was the Producer, and also a programmer. I coordinated communications with the team and ensured we finished goals in order to meet deadlines. I implemented simple enemy targeting systems.
-            </p>
-        </div>
-    </section>
-
-    <section id="Acorn Tower Defense">
-        <div class="container">
-            <h2>Acorn Tower Defense</h2>
-            <p> 
-                My first DigiPen project, this was a simple top down tower defense. I focused on the design aspect of this project, balancing enemy and tower stats in order to ensure for a fair experience in the game.
-            </p>
-        </div>
-    </section>
-
-    <section id="Mini Jame Gam">
-        <div class="container">
-            <h2>Mini Jame Gam</h2>
-            <p>
-                This was another project I did pre-DigiPen. It was a 2d platformer made in Unity. It was a game jam, and for this game jam, my primary focus was on level design and UI implementation. I implemented all of the UI elements, as well as designed levels for this game.
+                On this project, I was the engine programmer. This team composed of 4 other programmers and 2 designers. For this team, I decided that a component-based architecture engine would be best for the team, as the programmers on the team expressed lack of familiarity with C++ concepts. On this team, I implemented systems such as Serialization, Physics, Particle effects, Debugging tools, Unit Tests, and etc. On this team, I spent a lot of time pairs programming with other programmers who were unfamiliar with traditional game engine architecture, and mentored a lot of them. Within this team, I was a positive influence, teaching many of them how the engine architecture worked, mentoring them on how concepts like Polymorphism, inheritance, and templates in C++ worked, and utilized tech meetings to coordinate communications. 
             </p>
         </div>
     </section>
@@ -75,7 +52,7 @@
     <section id="Modding Projects">
         <div class="container">
             <h2>Modding Projects</h2>
-            <p>Before DigiPen, I worked on a variety of moding projects for fun. These were primarily mods for Doom Eternal and Team Fortress 2, with the mods for Doom Eternal being focused on editing gameplay attributes, and the mods for Team Fortress 2 focusing primarily on custom levels. Through my experiments with modding projects, I learned how to edit data files, how to playtest consistently to achieve design goals, and how to iterate on design in an effective manner.</p>
+            <p>Before DigiPen, I worked on a variety of moding projects for fun. These were primarily mods for Doom Eternal and Team Fortress 2, with the mods for Doom Eternal being focused on editing gameplay attributes, and the mods for Team Fortress 2 focusing primarily on custom levels. Through my experiments with modding projects, I learned how to edit data files, how to playtest consistently to achieve design goals, and how to iterate on design in an effective manner. Most importantly, these projects were what motivated me to become a software engineer. Modding communities promote this idea of the democratization of game development, and the development of open-source engine tools for developers of any background to use, for free.</p>
         </div>
     </section>
 </body>
