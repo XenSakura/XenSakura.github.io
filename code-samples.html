@@ -118,59 +118,6 @@ friend class SubscriberTemplate;
             </code>
         </pre>
     </div>
-    
-    <div class="container">
-        <h2>Targeting Code for HexenHold</h2>
-        <pre>
-            <code class="language-cpp">
-//-
-// GetNearestEntity: Gets the nearest entity with a given tag
-// -entity: The entity that is searching for the nearest entity
-// -tag: The tag of the desired entity
-// Returns the id of the nearest entity
-int PhysicsSystem::GetNearestEntity(const int& entity, const std::string& tag, bool CheckRaycast)
-{
-    Transform* entityTrans = FindTransformFromId(entity);
-    glm::vec2 entityPos = entityTrans->GetPosition();
-    float nearestDistSquared = (std::numeric_limits<float>::max)();
-    int nearestEntity = -1;
-    for (auto& [parent, trans] : *transform_call_)
-    {
-        // Case 1: if the parent is not the current entity, or isn't invalid
-        if (parent == entity || parent == -1)
-        {
-            continue;
-        }
-        // Case 2: if the tag isn't empty, and the tag search doesn't fail
-        if (tag != "" && !TagSystem::getInstance().HasTag(parent, tag))
-        {
-            continue;
-        }
-        // Case 3: are we checking raycast?
-        if (CheckRaycast)
-        {
-            // Raycast check code.
-            if (!RaycastToEntities(entity, parent))
-            {
-                continue;
-            }
-        }
-        // Compute squared distance. Faster than glm::distance
-        float dx = entityPos.x - trans.GetPosition().x;
-        float dy = entityPos.y - trans.GetPosition().y;
-        float distanceSquared = dx * dx + dy * dy;
-
-        if (distanceSquared < nearestDistSquared)
-        {
-            nearestDistSquared = distanceSquared;
-            nearestEntity = parent;
-        }
-    }
-    return nearestEntity;
-}
-            </code>
-        </pre>
-    </div>
 
     <!-- Include Prism.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
